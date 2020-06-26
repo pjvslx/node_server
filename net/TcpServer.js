@@ -2,12 +2,14 @@
 var net = require("net");
 var TcpServer = /** @class */ (function () {
     function TcpServer() {
-        this.lstSocket = [];
+        this.socketMap = {};
+        this.socketId = 0;
     }
     TcpServer.prototype.init = function () {
         var _this = this;
         var app = net.createServer(function (socket) {
-            _this.handleConnected(socket);
+            _this.socketId++;
+            _this.handleConnected(socket, _this.socketId);
             socket.on('data', function (data) {
                 _this.handleRecv(socket, data);
             });
@@ -19,8 +21,9 @@ var TcpServer = /** @class */ (function () {
         app.listen(TcpServer.PORT, TcpServer.IP);
         console.log('app.maxConnections = ' + app.maxConnections);
     };
-    TcpServer.prototype.handleConnected = function (socket) {
-        console.log('connect: ' + socket.remoteAddress + ':' + socket.remotePort);
+    TcpServer.prototype.handleConnected = function (socket, id) {
+        console.log('connect: ' + socket.remoteAddress + ':' + socket.remotePort + ' id = ' + id);
+        this.socketMap[id] = socket;
     };
     TcpServer.prototype.handleDisconnected = function (socket) {
         console.log('disconnect: ' + socket.remoteAddress + ':' + socket.remotePort);
