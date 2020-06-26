@@ -23,10 +23,16 @@ var TcpServer = /** @class */ (function () {
     };
     TcpServer.prototype.handleConnected = function (socket, id) {
         console.log('connect: ' + socket.remoteAddress + ':' + socket.remotePort + ' id = ' + id);
+        var tmp = socket;
+        tmp['socketId'] = id;
         this.socketMap[id] = socket;
     };
     TcpServer.prototype.handleDisconnected = function (socket) {
         console.log('disconnect: ' + socket.remoteAddress + ':' + socket.remotePort);
+        var tmp = socket;
+        var socketId = tmp['socketId'];
+        this.socketMap[socketId] = null;
+        socket.destroy();
     };
     TcpServer.prototype.handleRecv = function (socket, data) {
         console.log('recv');

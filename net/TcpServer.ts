@@ -27,11 +27,17 @@ class TcpServer{
 
     handleConnected(socket:net.Socket,id:number){
         console.log('connect: ' + socket.remoteAddress + ':' + socket.remotePort + ' id = ' + id);
+        let tmp:any = socket;
+        tmp['socketId'] = id;
         this.socketMap[id] = socket;
     }
 
     handleDisconnected(socket:net.Socket){
         console.log('disconnect: ' + socket.remoteAddress + ':' + socket.remotePort);
+        let tmp:any = socket;
+        let socketId = tmp['socketId'];
+        this.socketMap[socketId] = null;
+        socket.destroy();
     }
 
     handleRecv(socket:net.Socket,data:Buffer){

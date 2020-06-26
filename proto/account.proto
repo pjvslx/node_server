@@ -1,0 +1,69 @@
+syntax = "proto3";
+
+package account_service;
+
+
+enum ASResult {
+	Success = 0;
+	InternalError = 1;
+	Relogin = 2;
+	ShouldUseAccountLogin = 3;
+	AccountNotExist = 4;
+	WrongPassword = 5;
+	TokenCheckFailed = 6;
+	SMSSendFailed = 7;
+	SMSCodeError = 8;
+	DeviceNotExist = 9;
+	AccountExist = 10;
+	DeviceRebind = 11;
+	AccountRebind = 12;
+	PhoneRebind = 13;
+	ThirdRebind = 14;
+	AccountBanned = 15;
+	LoginError = 16;
+	DeviceBindTooMuch = 17;
+	AppIdError		=18;//没有appid
+	SecretkeyError	=19;//私钥不对
+	ThirdRegisterError	=20;//第三方注册失败
+	ThirdCheckInError = 21;// 第三方带入失败
+	ThirdCheckOutError = 22;// 第三方带出失败
+}
+
+message DeviceInfo {
+	string key = 1;
+	string value = 2;
+}
+
+message LoginRequest {
+	//登录的类型标识
+	string login_type = 1;
+	//登录游戏标识
+	string app_id = 2;
+	//登录用户名
+	string user_name = 3;
+	//登录密码
+	string password = 4;
+	//用户第三方登录provider
+	string provider = 5;
+	// device id
+	string device_id = 6;
+	//登录设备信息列表
+	repeated DeviceInfo dInfos = 7;
+	//Connection type: tcp, ws(web socket)...
+	//(default tcp)
+	string protocol = 8;
+}
+
+message LoginResponse {
+	//登录状态返回值
+	int32  ret = 1;
+	//用户的id
+	uint64 uid = 2;
+	//用户的token
+	string token = 3;
+	//绑定手机号
+	string bind_phone = 4;
+	
+	//游戏服的ip和端口
+	repeated string ips = 5;
+}
