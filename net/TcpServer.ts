@@ -1,6 +1,8 @@
 import net = require('net');
 import ClientHandler = require('./ClientHandler');
 import PacketBuffer = require('./PacketBuffer');
+import log4js = require('log4js');//加载log4js模块
+let logger = log4js.getLogger();
 class TcpServer{
     static IP:string = '127.0.0.1';
     static PORT:number = 8888;
@@ -47,13 +49,14 @@ class TcpServer{
 
     handleRecv(socket:net.Socket,data:Buffer){
         console.log('recv');
-        let packetBuffer = new PacketBuffer();
-        packetBuffer.writeBuffer(data);
-        let packets = packetBuffer.getPackages();
-        for(let i = 0; i < packets.length; i++){
-            console.log('-------msgType = ' + packets[i].msgType);
-            console.log('-------msgId = ' + packets[i].msgId);
+        let tmp:any = socket;
+        let socketId = tmp['socketId'];
+        let socketHandler:ClientHandler = this.clientHandlerMap[socketId];
+        if(socketHandler == null){
+            logger.error('handleRecv is error, socketId = ' + socketId);
+            return;
         }
+        socketHandler.handleRecv(data);
     }
 }
 
