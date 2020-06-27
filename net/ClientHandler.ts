@@ -16,8 +16,8 @@ class ClientHandler{
             let packet = packets[i];
             console.log('-------msgType = ' + packet.msgType);
             console.log('-------msgId = ' + packet.msgId);
-            let req:account_service.LoginRequest = account_service.LoginRequest.decode(packet.buf);
-            console.log('user_name = ' + req.userName + ' loginType = ' + req.loginType + ' deviceId = ' + req.deviceId);
+            let req:account_service.LoginResponse = account_service.LoginResponse.decode(packet.buf);
+            console.log('req = ' , req.toJSON());
         }
     }
 }

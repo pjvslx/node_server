@@ -149,8 +149,8 @@ export namespace account_service {
         /** LoginRequest dInfos */
         dInfos?: (account_service.IDeviceInfo[]|null);
 
-        /** LoginRequest protocol */
-        protocol?: (string|null);
+        /** LoginRequest pro */
+        pro?: (string|null);
     }
 
     /** Represents a LoginRequest. */
@@ -183,8 +183,8 @@ export namespace account_service {
         /** LoginRequest dInfos. */
         public dInfos: account_service.IDeviceInfo[];
 
-        /** LoginRequest protocol. */
-        public protocol: string;
+        /** LoginRequest pro. */
+        public pro: string;
 
         /**
          * Creates a new LoginRequest instance using the specified properties.

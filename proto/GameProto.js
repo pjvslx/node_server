@@ -1,7 +1,7 @@
 /*eslint-disable block-scoped-var, id-length, no-control-regex, no-magic-numbers, no-prototype-builtins, no-redeclare, no-shadow, no-var, sort-vars*/
 "use strict";
 
-var $protobuf = require("protobufjs");
+var $protobuf = require("protobufjs/minimal");
 
 // Common aliases
 var $Reader = $protobuf.Reader, $Writer = $protobuf.Writer, $util = $protobuf.util;
@@ -297,7 +297,7 @@ $root.account_service = (function() {
          * @property {string|null} [provider] LoginRequest provider
          * @property {string|null} [deviceId] LoginRequest deviceId
          * @property {Array.<account_service.IDeviceInfo>|null} [dInfos] LoginRequest dInfos
-         * @property {string|null} [protocol] LoginRequest protocol
+         * @property {string|null} [pro] LoginRequest pro
          */
 
         /**
@@ -373,12 +373,12 @@ $root.account_service = (function() {
         LoginRequest.prototype.dInfos = $util.emptyArray;
 
         /**
-         * LoginRequest protocol.
-         * @member {string} protocol
+         * LoginRequest pro.
+         * @member {string} pro
          * @memberof account_service.LoginRequest
          * @instance
          */
-        LoginRequest.prototype.protocol = "";
+        LoginRequest.prototype.pro = "";
 
         /**
          * Creates a new LoginRequest instance using the specified properties.
@@ -419,8 +419,8 @@ $root.account_service = (function() {
             if (message.dInfos != null && message.dInfos.length)
                 for (var i = 0; i < message.dInfos.length; ++i)
                     $root.account_service.DeviceInfo.encode(message.dInfos[i], writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
-            if (message.protocol != null && Object.hasOwnProperty.call(message, "protocol"))
-                writer.uint32(/* id 8, wireType 2 =*/66).string(message.protocol);
+            if (message.pro != null && Object.hasOwnProperty.call(message, "pro"))
+                writer.uint32(/* id 8, wireType 2 =*/66).string(message.pro);
             return writer;
         };
 
@@ -479,7 +479,7 @@ $root.account_service = (function() {
                     message.dInfos.push($root.account_service.DeviceInfo.decode(reader, reader.uint32()));
                     break;
                 case 8:
-                    message.protocol = reader.string();
+                    message.pro = reader.string();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -543,9 +543,9 @@ $root.account_service = (function() {
                         return "dInfos." + error;
                 }
             }
-            if (message.protocol != null && message.hasOwnProperty("protocol"))
-                if (!$util.isString(message.protocol))
-                    return "protocol: string expected";
+            if (message.pro != null && message.hasOwnProperty("pro"))
+                if (!$util.isString(message.pro))
+                    return "pro: string expected";
             return null;
         };
 
@@ -583,8 +583,8 @@ $root.account_service = (function() {
                     message.dInfos[i] = $root.account_service.DeviceInfo.fromObject(object.dInfos[i]);
                 }
             }
-            if (object.protocol != null)
-                message.protocol = String(object.protocol);
+            if (object.pro != null)
+                message.pro = String(object.pro);
             return message;
         };
 
@@ -610,7 +610,7 @@ $root.account_service = (function() {
                 object.password = "";
                 object.provider = "";
                 object.deviceId = "";
-                object.protocol = "";
+                object.pro = "";
             }
             if (message.loginType != null && message.hasOwnProperty("loginType"))
                 object.loginType = message.loginType;
@@ -629,8 +629,8 @@ $root.account_service = (function() {
                 for (var j = 0; j < message.dInfos.length; ++j)
                     object.dInfos[j] = $root.account_service.DeviceInfo.toObject(message.dInfos[j], options);
             }
-            if (message.protocol != null && message.hasOwnProperty("protocol"))
-                object.protocol = message.protocol;
+            if (message.pro != null && message.hasOwnProperty("pro"))
+                object.pro = message.pro;
             return object;
         };
 

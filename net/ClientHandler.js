@@ -13,8 +13,8 @@ var ClientHandler = /** @class */ (function () {
             var packet = packets[i];
             console.log('-------msgType = ' + packet.msgType);
             console.log('-------msgId = ' + packet.msgId);
-            var req = GameProto_1.account_service.LoginRequest.decode(packet.buf);
-            console.log('user_name = ' + req.userName + ' loginType = ' + req.loginType + ' deviceId = ' + req.deviceId);
+            var req = GameProto_1.account_service.LoginResponse.decode(packet.buf);
+            console.log('req = ', req.toJSON());
         }
     };
     return ClientHandler;

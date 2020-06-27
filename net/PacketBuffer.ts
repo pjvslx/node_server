@@ -4,7 +4,7 @@ class PacketBuffer{
     public static PACKET_MESSAGE_ID_LEN = 4;
     public static PACKET_MESSAGE_TYPE_LEN = 2;
     public static PACKET_MESSAGE_PYLOAD_LEN = 2;
-    public static PACKET_HEADER_LEN = PacketBuffer.PACKET_MESSAGE_TYPE_LEN + PacketBuffer.PACKET_MESSAGE_ID_LEN + PacketBuffer.PACKET_MESSAGE_PYLOAD_LEN;
+    public static PACKET_HEADER_LEN = PacketBuffer.PACKET_MESSAGE_TYPE_LEN + PacketBuffer.PACKET_MESSAGE_ID_LEN;
     buf:Buffer;
     constructor(){
         this.buf = Buffer.alloc(0);
@@ -26,6 +26,7 @@ class PacketBuffer{
             }
 
             let len = buf.readUInt16LE();
+            console.log('len = ' + len);
             let type = buf.readUInt16LE(PacketBuffer.PACKET_MESSAGE_TYPE_LEN);
             let id = buf.readUInt32LE(PacketBuffer.PACKET_MESSAGE_PYLOAD_LEN + PacketBuffer.PACKET_MESSAGE_TYPE_LEN);
             if(buf.length < len){
@@ -35,7 +36,12 @@ class PacketBuffer{
             let packet:Packet = new Packet();
             packet.msgId = id;
             packet.msgType = type;
-            packet.buf = buf.slice(PacketBuffer.PACKET_HEADER_LEN,len - PacketBuffer.PACKET_HEADER_LEN);
+            let start = PacketBuffer.PACKET_HEADER_LEN + PacketBuffer.PACKET_MESSAGE_PYLOAD_LEN;
+            let end = PacketBuffer.PACKET_MESSAGE_PYLOAD_LEN + len;
+            packet.buf = buf.slice(start,end);
+            for(let i = 0; i < buf.length; i++){
+                console.log('buf = ' + buf[i]);
+            }
             lstPacket.push(packet);
             let totalLength = len;
             buf = buf.slice(totalLength,buf.length - totalLength);

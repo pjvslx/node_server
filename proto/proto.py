@@ -5,7 +5,7 @@ if os.path.exists(tmp_dir) == True:
     shutil.rmtree(tmp_dir)
 # os.mkdir(tmp_dir)
 
-proto_file_list = ["account_server.proto"]
+proto_file_list = ["account.proto"]
 protobuf_cmd = "pbjs -t static-module -w commonjs -o ./GameProto.js"
 for i in proto_file_list:
     protobuf_cmd = protobuf_cmd + " " + i

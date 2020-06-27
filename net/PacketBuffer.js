@@ -19,6 +19,7 @@ var PacketBuffer = /** @class */ (function () {
                 return lstPacket;
             }
             var len = buf.readUInt16LE();
+            console.log('len = ' + len);
             var type = buf.readUInt16LE(PacketBuffer.PACKET_MESSAGE_TYPE_LEN);
             var id = buf.readUInt32LE(PacketBuffer.PACKET_MESSAGE_PYLOAD_LEN + PacketBuffer.PACKET_MESSAGE_TYPE_LEN);
             if (buf.length < len) {
@@ -28,7 +29,12 @@ var PacketBuffer = /** @class */ (function () {
             var packet = new Packet();
             packet.msgId = id;
             packet.msgType = type;
-            packet.buf = buf.slice(PacketBuffer.PACKET_HEADER_LEN, len - PacketBuffer.PACKET_HEADER_LEN);
+            var start = PacketBuffer.PACKET_HEADER_LEN + PacketBuffer.PACKET_MESSAGE_PYLOAD_LEN;
+            var end = PacketBuffer.PACKET_MESSAGE_PYLOAD_LEN + len;
+            packet.buf = buf.slice(start, end);
+            for (var i = 0; i < buf.length; i++) {
+                console.log('buf = ' + buf[i]);
+            }
             lstPacket.push(packet);
             var totalLength = len;
             buf = buf.slice(totalLength, buf.length - totalLength);
@@ -39,7 +45,7 @@ var PacketBuffer = /** @class */ (function () {
     PacketBuffer.PACKET_MESSAGE_ID_LEN = 4;
     PacketBuffer.PACKET_MESSAGE_TYPE_LEN = 2;
     PacketBuffer.PACKET_MESSAGE_PYLOAD_LEN = 2;
-    PacketBuffer.PACKET_HEADER_LEN = PacketBuffer.PACKET_MESSAGE_TYPE_LEN + PacketBuffer.PACKET_MESSAGE_ID_LEN + PacketBuffer.PACKET_MESSAGE_PYLOAD_LEN;
+    PacketBuffer.PACKET_HEADER_LEN = PacketBuffer.PACKET_MESSAGE_TYPE_LEN + PacketBuffer.PACKET_MESSAGE_ID_LEN;
     return PacketBuffer;
 }());
 module.exports = PacketBuffer;
