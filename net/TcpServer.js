@@ -1,8 +1,10 @@
 "use strict";
 var net = require("net");
+var ClientHandler = require("./ClientHandler");
+var PacketBuffer = require("./PacketBuffer");
 var TcpServer = /** @class */ (function () {
     function TcpServer() {
-        this.socketMap = {};
+        this.clientHandlerMap = {};
         this.socketId = 0;
     }
     TcpServer.prototype.init = function () {
@@ -25,17 +27,27 @@ var TcpServer = /** @class */ (function () {
         console.log('connect: ' + socket.remoteAddress + ':' + socket.remotePort + ' id = ' + id);
         var tmp = socket;
         tmp['socketId'] = id;
-        this.socketMap[id] = socket;
+        var clientHandler = new ClientHandler();
+        clientHandler.id = id;
+        clientHandler.socket = socket;
+        this.clientHandlerMap[id] = clientHandler;
     };
     TcpServer.prototype.handleDisconnected = function (socket) {
         console.log('disconnect: ' + socket.remoteAddress + ':' + socket.remotePort);
         var tmp = socket;
         var socketId = tmp['socketId'];
-        this.socketMap[socketId] = null;
+        this.clientHandlerMap[socketId] = null;
         socket.destroy();
     };
     TcpServer.prototype.handleRecv = function (socket, data) {
         console.log('recv');
+        var packetBuffer = new PacketBuffer();
+        packetBuffer.writeBuffer(data);
+        var packets = packetBuffer.getPackages();
+        for (var i = 0; i < packets.length; i++) {
+            console.log('-------msgType = ' + packets[i].msgType);
+            console.log('-------msgId = ' + packets[i].msgId);
+        }
     };
     TcpServer.IP = '127.0.0.1';
     TcpServer.PORT = 8888;

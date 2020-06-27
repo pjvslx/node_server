@@ -1,8 +1,10 @@
 import net = require('net');
+import ClientHandler = require('./ClientHandler');
+import PacketBuffer = require('./PacketBuffer');
 class TcpServer{
     static IP:string = '127.0.0.1';
     static PORT:number = 8888;
-    socketMap: any = {};
+    clientHandlerMap: any = {};
     socketId:number = 0;
     constructor(){
 
@@ -29,19 +31,29 @@ class TcpServer{
         console.log('connect: ' + socket.remoteAddress + ':' + socket.remotePort + ' id = ' + id);
         let tmp:any = socket;
         tmp['socketId'] = id;
-        this.socketMap[id] = socket;
+        let clientHandler:ClientHandler = new ClientHandler();
+        clientHandler.id = id;
+        clientHandler.socket = socket;
+        this.clientHandlerMap[id] = clientHandler;
     }
 
     handleDisconnected(socket:net.Socket){
         console.log('disconnect: ' + socket.remoteAddress + ':' + socket.remotePort);
         let tmp:any = socket;
         let socketId = tmp['socketId'];
-        this.socketMap[socketId] = null;
+        this.clientHandlerMap[socketId] = null;
         socket.destroy();
     }
 
     handleRecv(socket:net.Socket,data:Buffer){
         console.log('recv');
+        let packetBuffer = new PacketBuffer();
+        packetBuffer.writeBuffer(data);
+        let packets = packetBuffer.getPackages();
+        for(let i = 0; i < packets.length; i++){
+            console.log('-------msgType = ' + packets[i].msgType);
+            console.log('-------msgId = ' + packets[i].msgId);
+        }
     }
 }
 
